@@ -23,7 +23,7 @@ else {
             //echo "<p> Password is valid for the user : ".$first." ".$last."</p>";
             // Redirect to a different page
             $_SESSION['loggedin'] = true;
-            $_SESSION["userName"] = $first . " " . $last;
+            $_SESSION["userName"] = $first;
             $_SESSION["userID"]= $userID;
             $passwordMatch = true;          
         }

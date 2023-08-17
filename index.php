@@ -18,7 +18,7 @@ session_start();
     <script>
         $(document).ready(function() {
             book_list();
-            cat_list();
+            //cat_list();
             
             function book_list() { 
               $.ajax({
@@ -34,14 +34,18 @@ session_start();
             function cat_list() { 
                 $("body").on("click",".category",function(event){
     	       var cid = $(this).attr('cid');
-               $.ajax({url:"action.php", method : "POST", data : {categories:1,cat_id:cid}, success : function(result1){
-                $("#myproducts").html(result1);
+               $.ajax({
+                url:"action.php", 
+                method : "POST", 
+                data : {categories:1,cat_id:cid}, 
+                success : function(result1){
+                    $("#myproducts").html(result1);
         
-     }
-    })
-	})	
+            }
+            })
+	       })	
 	 	
-     }
+            }
             
         });
       </script>
@@ -53,22 +57,6 @@ session_start();
 <header>
      <?php include 'header.php'; ?>
 </header>
-    
-<div class="jumbotron">
-    <div class="collapse navbar-collapse" id="myNavbar" >
-      <ul class="nav navbar-nav">
-        <li><a href="#" class="category" cid="fiction" onclick="cat_list();" >Fiction</a></li>
-        <li><a href="#" class="category" cid="fantasy" onclick="cat_list();" >Fantasy</a></li>
-        <li><a href="#" class="category" cid="horror" onclick="cat_list();" >Horror</a></li>
-        <li><a href="#" class="category" cid="childrens" onclick="cat_list();" >Childrens</a></li>
-        <li><a href="#" class="category" cid="historical" onclick="cat_list();" >Historical</a></li>
-        <li><a href="#" class="category" cid="romance" onclick="cat_list();" >Romance</a></li>
-        <li><a href="#" class="category" cid="science" onclick="cat_list();" >Science</a></li>
-        <li><a href="#" class="category" cid="mystery" onclick="cat_list();" >Mystery</a></li>
-        
-      </ul>
-      </div>
-</div>
     
 <!-- First Container -->
 <div class="container-fluid bg-1 text-center">

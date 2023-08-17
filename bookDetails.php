@@ -23,7 +23,7 @@ session_start();
 </header>
 
 <div class="container mt-5">
-  <div class="row" id="myproducts">
+  <div class="row" id="mybooks">
       <!--Book details display here -->
 <?php 
 include 'db_connect.php';
