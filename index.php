@@ -18,7 +18,7 @@ session_start();
     <script>
         $(document).ready(function() {
             book_list();
-            //cat_list();
+            cat_list();
             
             function book_list() { 
               $.ajax({
@@ -45,9 +45,32 @@ session_start();
             })
 	       })	
 	 	
-            }
-            
+            }            
         });
+        
+        function add_to_fav_list() {
+            // JavaScript code to execute when the button is clicked         
+            $("body").on("click",".add-to-fav",function(event){
+    	       var pid = $(this).attr('pid');
+               $.ajax({
+                url:"action.php", 
+                method : "POST", 
+                data : {addfavbook:1,fav_book_id:pid}, 
+                success : function(result1){
+                    alert("The book has been added to your favorite list");
+            },
+            error: function(xhr, status, error) {
+                // Handle AJAX failure
+                console.error('AJAX Error:', error);
+                console.log('Status:', status);
+
+                // Display an error message to the user
+                alert('An error occurred. Please try again later.');
+            }
+            })
+	       })	 
+            }
+        
       </script>
 
 </head>

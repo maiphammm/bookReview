@@ -43,11 +43,11 @@ include 'db_connect.php';
         
             }
             })
-	       })	
-	 	
-            }    
+	       })	 	
+            }                     
             
         });
+
       </script>
 
 </head>
@@ -77,13 +77,30 @@ if(isset($_POST["search"])){
                 $bookImg = $row["bookImg"];
                 $bookDetail = $row["bookDetail"]; 
                 $bookType = $row["bookType"];
-                
-                echo "
-                    <div class='col-md-4' >
+               
+              if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+                   echo "
+                    <div class='col-sm-4' >
                         <div class='panel-body'> <a href='bookDetails.php?id=$bookID'><img src='images/$bookImg' class='img-responsive' style='width:80%' alt='Image'></a></div>                     
-                        <div class='panel-heading'>$bookName</div>
+                        <div class='panel-heading'>$bookName                      
+                        </div>
+                        
                     </div>                      
-             ";   
+                    ";   
+              }
+              else{
+                   echo "
+                    <div class='col-sm-3' >
+                        <div class='panel-body'> <a href='bookDetails.php?id=$bookID'><img src='images/$bookImg' class='img-responsive' style='width:80%' alt='Image'></a></div>                     
+                        <div class='panel-heading'>$bookName
+                        <button type='button' class='btn btn-default btn-sm add-to-fav' pid='$bookID' id='$bookID' onclick='add_to_fav_list();'>
+                            <span class='glyphicon glyphicon-heart'></span> 
+                        </button>
+                        </div>
+                        
+                    </div>                      
+                    ";   
+              }
                   
           }
           echo "<br><br><br>";

@@ -1,10 +1,8 @@
 <?php
 // Start the session
 session_start();
-$_SESSION["userID"] = "";
 include 'db_connect.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,16 +14,25 @@ include 'db_connect.php';
   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="myscript.js"></script>
-        <script>
-$("body").on("click",".add_book",function(event){
-    event.preventDefault();
-    var bookID = $(this).attr('bid');
-    $.ajax({url:"action.php", method : "POST", 
-                data : {addbook:1,BookID:bookID},
-                success : function(data){alert(data)}}
-           )
-});
+    <script type="text/javascript" src="myscript.js"></script>  
+    <script>
+        function remove_from_fav_list()
+        {
+             // JavaScript code to execute when the button is clicked         
+            $("body").on("click",".delete-book",function(event){
+    	       var pid = $(this).attr('pid');
+               $.ajax({
+                url:"action.php", 
+                method : "POST", 
+                data : {deletefavbook:1,fav_book_id:pid}, 
+                success : function(result1){
+                    //alert("The book has been removed from your favorite list");
+            }
+            })
+	       })
+           // After the delete operation is done, refresh the page
+           location.reload();
+        }  
     </script>
 
 </head>
@@ -35,27 +42,17 @@ $("body").on("click",".add_book",function(event){
 <header>
      <?php include 'header.php'; ?>
 </header>
-
   
 <div class="container-fluid">
-  <div class="row" id="mybooks">
-      <div class="col-md-2"></div>
-      <div class="col-md-8">
-          <div class="panel-heading">My Favorite List</div>
-          <div class="panel-body">
-             <div class="row">
-                <div class="col-md-2">Delete</div>
-                <div class="col-md-2"></div>
-                <div class="col-md-2">Name</div>
-                <div class="col-md-2">Author</div>
-                <div class="col-md-2">Type</div>
-             </div>
-              <div id="list_display"><br><br><br>
+<div class="row" id="mybooks">
+    <div class="panel-heading col-sm-12" style="text-align:center;">My Favorite List</div>
+</div>
+<div lass="row" id="list_display">
 <?php 
 
       
 ///////////////////My list//////////////////////
-
+                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
                   $userID = $_SESSION["userID"];
                   $sql="SELECT * FROM mylist WHERE userID = '$userID'"; 
                   
@@ -68,33 +65,26 @@ $("body").on("click",".add_book",function(event){
                         $bookName = $row["bookName"];
                         $bookAuthor = $row["bookAuthor"];
                         $bookImg = $row["bookImg"];
-                        $bookDetail = $row["bookDetail"]; 
                         $bookType = $row["bookType"];
-                          echo"
-                          <div class='row>
-                          <div class='col-md-2><a=href='#' class='delete_book' id='$bookID'>
-                          <span class='glyphicon glyphicon-remove'></span></a></div>
-                          <div class='col-md-2><a href='bookDetails.php?id=$bookID'><img src='images/$bookImg' class='img-responsive' style='width:80%' alt='Image'></a></div>
-                          <div class='col-md-2>$bookName</div>
-                          <div class='col-md-2>$bookAuthor</div>
-                          <div class='col-md-2>$bookType</div>
-                          
+                          echo"                                           
+                          <div class='col-sm-3' >
+                            <div class='panel-body'> <a href='bookDetails.php?id=$bookID'><img src='images/$bookImg' class='img-responsive' style='width:80%' alt='Image'></a></div>
+
+                            <div class='panel-heading'>$bookName</div>
+                            <button type='button' class='btn btn-default btn-sm delete-book' pid='$bookID' id='$bookID' onclick='remove_from_fav_list();'>
+                                <span class='glyphicon glyphicon-remove'></span> 
+                            </button>
                           </div>
                           ";
                   }
                   }
+                }
                         
 
            
 ?>    
-              </div>
-          </div>
-      </div>
-      <!--My list display here -->
 
-
-
-    </div>
+</div>
 </div>
 
     

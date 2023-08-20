@@ -1,7 +1,7 @@
-              
-        $(document).ready(function() {
-            book_list();
-            cat_list();
+
+$(document).ready(function() {
+    book_list();
+    cat_list();
             //recommended_list();
             
             function book_list() { 
@@ -28,7 +28,42 @@
 	})	
 	 	
      }
-            
+    
+    
+function add_to_fav_list() {
+            // JavaScript code to execute when the button is clicked         
+            $("body").on("click",".add-to-fav",function(event){
+    	       var pid = $(this).attr('pid');
+               $.ajax({
+                url:"action.php", 
+                method : "POST", 
+                data : {addfavbook:1,fav_book_id:pid}, 
+                success : function(result1){
+            }
+            })
+	       })	 
+}
+    
+
+
+    
+
+    
+    
+}); 
+
+
+
+/*
+$("body").on("click",".add_book",function(event){
+    event.preventDefault();
+    var bookID = $(this).attr('bid');
+    $.ajax({url:"action.php", method : "POST", 
+                data : {addbook:1,BookID:bookID},
+                success : function(data){alert(data)}}
+           )
+});
+*/
 
            /* function recommended_list() { 
               $.ajax({
@@ -41,20 +76,6 @@
               })
             }
             */
-  
-            
-        });     
-
-
-$("body").on("click",".add_book",function(event){
-    event.preventDefault();
-    var bookID = $(this).attr('bid');
-    $.ajax({url:"action.php", method : "POST", 
-                data : {addbook:1,BookID:bookID},
-                success : function(data){alert(data)}}
-           )
-});
-
 
 
 

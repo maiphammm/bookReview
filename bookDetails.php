@@ -13,7 +13,51 @@ session_start();
   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
+  <script src="myscript.js"></script>  
+   <script>
+        $(document).ready(function() {
+            
+            // Submit review code
+            $("body").on("submit",".book-review-form", function(event){
+                //event.preventDefault();
+                
+                // Get the book id and review that is stored in pid
+                var pid = $(this).children('button').attr('pid');
+                var review = $(this).find("textarea#review").val().replace(/\n/g, '<br />').trim();
+                
+                $.ajax({
+                    url:"action.php", 
+                    method : "POST", 
+                    data : {submit_review:1,book_id:pid, review:review}, 
+                    success : function(result1){
+                        alert('Review Submitted!');
+                   }
+                });
+            
+            
+            });
+            
+            
+            //Get book reviews
+            
+            //get bookid
+            var pid = $(".book-details").data('book-id');
+            $.ajax({
+                    url:"action.php", 
+                    method : "POST", 
+                    data : {get_book_reviews:1,book_id:pid}, 
+                    success : function(result1){
+                        console.log(result1);
+                        $(".review-section").html(result1);
+                   }
+                });
+            
+
+             
+            
+        });  
+
+      </script>
 </head>
 <body>
 
@@ -39,7 +83,7 @@ $row = mysqli_fetch_array($result);
         $bookDetail = $row["bookDetail"]; 
         $bookType = $row["bookType"];
 echo "
-    <div class='col-sm-4'>
+    <div data-book-id="."${bookID}"." class='book-details col-sm-4'>
       <h2>$bookName<h2>
       <br>
       <img src='Images/$bookImg' class='img-responsive' style='width:70%' alt='Image'>
@@ -61,38 +105,30 @@ echo "
     </div>
 ";
            
-      ?>
-      <div class="col-sm-8">
+?>
+      <div class="col-sm-8">      
+       <?php
+          if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+              echo '<h4> Please login to leave a review</h4>';             
+          }
+          else{
+              echo '<h4>Leave a review </h4>';
+              echo <<<FORM
+              <form class="book-review-form" method="post" action="">
+                        <div class="form-group">
+                            <textarea id="review" name="review" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" pid=${bookID} class="btn btn-default">Submit</button>
+                    </form>
+            FORM;
+          }
+        ?>
+      <p>
+          <span class="badge"></span> Reviews:</p>
       
-      <h4>Leave a review:</h4>
-      <form role="form">
-        <div class="form-group">
-          <textarea class="form-control" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-success">Submit</button>
-      </form>
-      <br><br>
-      
-      <p><span class="badge">2</span> Reviews:</p><br>
-      
-      <div class="row">
-        <div class="col-sm-2 text-center">
-          <img src="bandmember.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-        </div>
-        <div class="col-sm-10">
-          <h4>Anja <small>Sep 29, 2015, 9:12 PM</small></h4>
-          <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <br>
-        </div>
-        <div class="col-sm-2 text-center">
-          <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-        </div>
-        <div class="col-sm-10">
-          <h4>John Row <small>Sep 25, 2015, 8:25 PM</small></h4>
-          <p>I am so happy for you man! Finally. I am looking forward to read about your trendy life. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <br>
-		</div>
-    </div>
+      <div class="review-section">
+        
+     </div>
     </div>
 
     </div>

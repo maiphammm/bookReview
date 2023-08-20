@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +10,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
   <style>
     body {
     font: 20px Montserrat, sans-serif;
@@ -104,16 +106,16 @@
               <li><a href="formnew.php"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>';
           }
           else{
-              echo ' <li><a href="#"><span class="glyphicon glyphicon-user"></span> ';
+              echo sprintf('<li><a href="edituser.php?id=%d"><span class="glyphicon glyphicon-user"></span> ', $_SESSION["userID"]);
               echo $_SESSION["userName"];
-              echo '</a></li>
-                     <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Log Out</a></li>';
+              echo '</a></li>';
+              echo '<li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Log Out</a></li>';
           }
         ?>
       </ul>
     </div>
   </div>
 </nav>
-    
+  
 </body>
 </html>
